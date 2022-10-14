@@ -203,7 +203,7 @@ var app = {
     loadCode(href, title) {
         var _this = this;
         if (href != 'undefined') {
-            location.href = '/#' + href;
+            location.href = location.href+'/#' + href;
             $('#code-module').load(href, () => {
                 $('#page-title').html(title);
                 _this.formatHtml();
