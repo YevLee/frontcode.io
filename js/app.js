@@ -2,6 +2,7 @@ var app = {
     el: $('#href-list'),
     pages: pages,
     theme:'yonce',
+    site:'https://yevlee.github.io/frontcode.io',
     renderNav() {
         var _this = this;
         var pages = _this.pages;
@@ -197,7 +198,8 @@ var app = {
         var _this = this;
         if (href != 'undefined') {
             location.href = '#' + href;
-            $('#code-module').load(href, () => {
+            var site = _this.site==''?'':_this.site;
+            $('#code-module').load(site+hreft, () => {
                 $('#page-title').html(title);
                 _this.formatHtml();
             });
