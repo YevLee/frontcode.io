@@ -199,7 +199,7 @@ var app = {
         if (href != 'undefined') {
             location.href = '#' + href;
             var site = _this.site==''?'':_this.site;
-            $('#code-module').load(site+hreft, () => {
+            $('#code-module').load(site+href, () => {
                 $('#page-title').html(title);
                 _this.formatHtml();
             });
