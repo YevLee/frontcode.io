@@ -1,1 +1,58 @@
-hello world
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/media.css">
+    <link rel="stylesheet" href="css/codemirror.css">
+    <link rel="stylesheet" href="css/yonce.css">
+    <link rel="stylesheet" href="css/3024-night.css">
+
+</head>
+
+<body>
+    <div id="app">
+        <div id="header-module" class="container-fluid row"></div>
+        <div id="main-module" class="container-fluid row">
+            <div id="aside-module" class="col-xs-12 col-sm-2"></div>
+            <div id="content-module" class="col-xs-12 col-sm-10">
+                <div id="page-title"></div>
+                <div id="code-module"></div>
+            </div>
+            <div id="goTop-module"></div>
+        </div>
+        <div id="footer-module"></div>
+    </div>
+    <script src="js/jquery-3.2.0.js"></script>
+    <!-- codemirror start -->
+    <script src="js/codemirror.js"></script>
+    <script src="js/runmode.js"></script>
+    <script src="js/colorize.js"></script>
+    <script src="js/javascript.js"></script>
+    <script src="js/css.js"></script>
+    <script src="js/htmlmixed.js"></script>
+    <script src="js/sublime.js"></script>
+    <!-- codemirror e -->
+    <script src="js/util.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/pages.js"></script>
+    <script>
+        $(function () {
+            $('#header-module').load('header.html');
+            $('#aside-module').load('aside.html', function () {
+                appendJs($('body'), 'js/app.js');
+
+            })
+            $('#footer-module').load('footer.html')
+            $('#goTop-module').load('go_top.html', function () {
+                appendJs($('body'), 'js/to_top.js')
+            })
+        })
+    </script>
+</body>
+
+</html>
