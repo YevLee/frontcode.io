@@ -81,13 +81,6 @@ var app = {
     formatHtml() {
         var _this = this;
         var pre = document.getElementById("pre");
-        var lang = pre.getAttribute('data-lang');
-        var mode = '';
-        if(lang=='html'){
-            mode = 'htmlmixed'
-        }else {
-            mode = lang;
-        }
         var editor = CodeMirror.fromTextArea(pre, {
             // mode: "text/html",
             lineNumbers: true,
