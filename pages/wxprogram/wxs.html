@@ -1,0 +1,28 @@
+<div class="show-title">代码</div>
+<div class="content">
+    <textarea id="pre">
+           <wxs module="price">
+                     <!-- 价格过滤器，取得整数部分价格 -->
+                     function parsePrice(val){
+                        var price = val.split('.')[0]
+                        if(typeof val && typeof val == 'string'){
+                            return price
+                        }
+                    }
+                    <!-- 价格过滤器，取得小数部分价格 -->
+                    function floatPrice(val){
+                        var price = val.split('.')[1]
+                        if(typeof val && typeof val == 'string'){
+                            return price
+                        }
+                    }
+                   
+                    module.exports = {
+                        parsePrice:parsePrice,
+                        floatPrice:floatPrice
+                        
+                    }
+          </wxs>
+          {{price.parsePrice(item.price)}}
+          </textarea>
+</div>

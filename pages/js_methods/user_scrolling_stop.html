@@ -1,0 +1,23 @@
+<div class="content">
+	<textarea id="pre">
+		const onScrollStop = callback => {
+  let isScrolling;
+  // 监听用户滚动事件
+  window.addEventListener(
+    'scroll',
+    e => {
+      clearTimeout(isScrolling);
+      // 150 毫秒内未滚动则执行回调
+      isScrolling = setTimeout(() => {
+        callback();
+      }, 150);
+    },
+    false
+  );
+};
+
+onScrollStop(() => {
+  console.log('The user stopped scrolling');
+});
+	</textarea>
+</div>

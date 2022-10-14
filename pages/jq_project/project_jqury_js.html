@@ -1,0 +1,306 @@
+<div class="content">
+	<textarea id="pre">
+		/**
+ * 前端作者:李文杰
+ * 联系方式（微信）:liwenjieoh666
+ * 联系方式（qq）:820876312
+ */
+	// 检测屏幕设备
+	window.layout = {
+	  MIN_CONTENT_WIDTH: 1440,
+	  MOBILE_BREAKPOINT: 1261,
+	  getPlatform: function () {
+	    var viewport = layout.getWidth();
+	    if (viewport <= layout.MOBILE_BREAKPOINT) {
+	      return 'mobile';
+	    }
+	    return 'desktop';
+	  },
+	  getScrollTop() {
+	    var scrollTop = $(window).scrollTop();
+	    $(window).on('scroll', function () {
+	      scrollTop = $(window).scrollTop();
+	    })
+	    return scrollTop
+	  },
+	  getWidth() {
+	    return $(window).width();
+	  },
+	  getHeight() {
+	    return $(window).height();
+	  },
+	  watch: function (callback) {
+	    callback(function () {
+	      this.getPlatform();
+	      this.getScrollTop();
+	    });
+	    $(window).on(
+	      'smartresize orientationchange',
+	      function () {
+	        callback();
+	      }
+	    );
+	  },
+
+	};
+	$(window).on(
+	  'resize',
+	  debounce(function () {
+	    $(window).trigger('smartresize');
+	  }, 50)
+	);
+	// 网站公共执行方法
+	var appGlobal = {
+	  copy: function () {
+	    $('.copyMsg').copyMsg()
+	  },
+	  imgLazyLoad: function () {
+	    $('.lazyload').lazyload();
+	  },
+	  numUp: function () {
+	    $('.counter').numIncrement();
+	  },
+	  doAnimate: function () {
+	    $('.anim').animInit();
+	  },
+	  globalInit: function () {
+	    this.copy();
+	    this.imgLazyLoad();
+	    this.numUp();
+	    this.doAnimate();
+	  },
+	}
+	$(function () {
+	  appGlobal.globalInit();
+	})
+	//jquery拓展方法
+	$.fn.extend({
+	  scrollFollow: function (opts) {
+	    var $scrollEle = this;
+	    console.log(this)
+	    var originalY = $scrollEle.offset().top;
+	    var topMargin = opts.mtTop;
+	    $(window).on('scroll', function (event) {
+	      var scrollTop = $(window).scrollTop();
+
+	      $scrollEle.stop(false, false).animate({
+	        // top: scrollTop < originalY ?
+	        //   0 : scrollTop - originalY + topMargin
+	        top: scrollTop < originalY ?
+	          0 : '50%'
+	      }, opts.speed);
+	    });
+	  },
+	  notEmpty: function (el) {
+	    if ($(el).legnth > 0) {
+	      return true;
+	    } else {
+	      return false
+	    }
+	  },
+	  renderSwiper: function (opt) {
+	    return new Swiper($(this), opt)
+	  },
+	  /**
+	   * @activeClass 高亮样式类名
+	   * @childNode 赋给高亮样式的目标元素类名
+	   */
+	  hoverActive: function (opt) {
+	    var defaults = {
+	      activeClass: "active",
+	      targetNode: ".item"
+	    };
+	    var opts = $.extend(defaults, opt);
+	    var origIdx = $(this).find(opts.targetNode + "." + opts.activeClass).index();
+	    var items = $(this).find(opts.targetNode);
+	    items.hover(function () {
+	      $(this).addClass(opts.activeClass).siblings().removeClass(opts.activeClass);
+	    }, function () {
+	      items.eq(origIdx).addClass(opts.activeClass).siblings().removeClass(opts.activeClass);
+	    })
+	  },
+	  /**
+	   * @liItem 鼠标移入的元素
+	   * @targetFlowEl 跟随元素
+	   * @current 导航高亮样式
+	  */
+	  hoverFlowMenu: function (opt) {
+	    var defaults = {
+	      liItem: "li",
+	      targetFlowEl: '.wrap-line',
+	      current: "li.active"
+	    };
+	    var opts = $.extend(defaults, opt);
+	    var targetFlowEl = $(this).find(opts.targetFlowEl);
+	    var liItem = $(this).find(opts.liItem)
+	    targetFlowEl.css({
+	      left: $(opts.current).position().left,
+	      width: $(opts.current).outerWidth()
+	    })
+	    liItem.hover(function () {
+	      console.log($(this).position().left)
+	      targetFlowEl.stop().animate({
+	        left: $(this).position().left,
+	        width: $(this).outerWidth()
+	      })
+	    }, function () {
+	      targetFlowEl.stop().animate({
+	        left: $(opts.current).position().left,
+	        width: $(opts.current).outerWidth()
+	      });
+	    })
+	  },
+	  // 网页复制功能
+	  copyMsg: function () {
+	    var _this = $(this);
+	    var data = _this.attr("data-copy");
+	    _this.click(function () {
+	      var aux = document.createElement("input");
+	      aux.setAttribute("value", data);
+	      document.body.appendChild(aux);
+	      aux.select();
+	      document.execCommand("copy");
+	      document.body.removeChild(aux);
+	      alert("✔已成功复制微信号（" + data + " xxx），赶紧打开微信，粘贴添加好友，免费询价吧 ⊙∀⊙");
+	    })
+	  },
+	  scrollUpTop: function (opt) {
+	    var defaults = {
+	      speed: 800
+	    };
+	    var opts = $.extend(opt, defaults);
+	    var that = this;
+	    $(window).on('scroll', function () {
+	      var top = $(this).scrollTop();
+	      if (top > 50) {
+	        $(that).show();
+	      } else {
+	        $(that).hide();
+	      }
+	    })
+	    $(that).each(function () {
+	      $(that).click(function () {
+	        $('html, body').stop(true, true).animate({
+	          'scrollTop': 0
+	        },
+	          opts.speed);
+	      })
+	    })
+	  },
+	  // 数字递增特效
+	  numIncrement: function () {
+	    if ($(this).length) {
+	      $(this).counterUp({
+	        delay: 1,
+	        time: 250
+	      });
+	    };
+	  },
+	  // amim自定义动画
+	  animInit: function () {
+	    // 出场动画
+	    var anim = $(this); //'.anim'
+	    setTimeout(function () { //规避页面加载不完整高度获取异常
+	      $(window).scroll(function () {
+	        rollAni();
+	      })
+	      $(window).resize(function () {
+	        rollAni();
+	      })
+	      rollAni();
+	    },
+	      10);
+	    function rollAni() { //滚动执行动画
+	      var oHeight = $(window).height();
+	      var ScrVal = $(window).scrollTop();
+	      anim.each(function (i) {
+	        var className = $(this).attr('data-class');
+	        if (ScrVal + oHeight > anim.eq(i).offset().top) {
+	          anim.eq(i).addClass(className);
+	        } else {
+	          anim.eq(i).removeClass(className);
+	        }
+	      })
+	    }
+	  },
+	  // 子元素跟父元素等高
+	  elementEqualHeight: function (opt) {
+	    var defaults = {
+	      container: '.equal-container',
+	      element: '.equal-element'
+	    };
+	    var opts = $.extend(defaults, opt);
+	    if (opts.equal) {
+	      setTimeout(function () {
+	        $(opts.container).each(function () {
+	          var $this = $(this);
+	          if ($this.find(opts.element).length) {
+	            $this.find(opts.element).css({
+	              'height': 'auto'
+	            });
+	            var elem_height = 0;
+	            $this.find(opts.element).each(function () {
+	              var this_elem_h = $(this).height();
+	              if (elem_height < this_elem_h) {
+	                elem_height = this_elem_h;
+	              }
+	            });
+	            $this.find(opts.element).height(elem_height);
+	          }
+	        });
+	      }, 50);
+	    };
+	  },
+	});
+	var Share = {
+	  //微信
+	  weixin: function () {
+	    $('.share-mask').show();
+	    // 保存二维码的容器
+	    var qrcode = new QRCode('setQrcode', {
+	      text: window.location.href,
+	      width: 200,
+	      height: 200,
+	      colorDark: '#000000',
+	      colorLight: '#ffffff',
+	      correctLevel: QRCode.CorrectLevel.H
+	    });
+	    var w = $('#setQrcode').innerWidth();
+	    console.log($('#setQrcode').children('img'))
+	    if ($('#setQrcode').children('canvas')) {
+	      $('#setQrcode').children('canvas').css('width', w)
+	    }
+	    console.log($('#setQrcode').children('img').width());
+	  },
+
+	  //新浪微博
+	  weibo: function () {
+	    window.open("http://service.weibo.com/share/share.php?title=" + share_Title + "&url=" + window.location.href + "&pic=" + share_Img);
+	  },
+	  //qq好友
+	  sqq: function () {
+	    window.open("https://connect.qq.com/widget/shareqq/index.html?title=" + share_Title + "&url=" + window.location.href);
+	  },
+	  //QQ空间
+	  qq_zone: function () {
+	    window.open("http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?title=" + share_Title + "&summary=" + share_Info + "&url=" + window.location.href + "&pics=" + share_Img);
+	  },
+	}
+	// 节流函数
+	function debounce(func, wait, immediate) {
+	  var timeout;
+	  return function tick() {
+	    var context = this,
+	      args = arguments;
+	    var later = function () {
+	      timeout = null;
+	      if (!immediate) func.apply(context, args);
+	    };
+	    var callNow = immediate && !timeout;
+	    clearTimeout(timeout);
+	    timeout = setTimeout(later, wait);
+	    if (callNow) func.apply(context, args);
+	  };
+	};
+	</textarea>
+</div>

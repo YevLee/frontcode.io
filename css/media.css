@@ -1,0 +1,39 @@
+@media screen and (max-width: 798px){
+    #aside-module{
+        display: none;
+    }
+    .navbar-default .navbar-toggle{
+        display: block;
+    }
+    .header .main{
+    	padding:10px 15px;
+    }
+    .header .mini-logo{
+    	display: block;
+    }
+    .header .pc-logo{
+    	display: none;
+    }
+    #search-tool{
+    	width: 180px;
+    	font-size: 12px;
+    }
+    #page-title{
+    	font-size: 2.2rem;
+    }
+    .show-title{
+    	font-size: 1.6rem;
+    }
+    #format{
+    	font-size: 1.2rem;
+    }
+    #footer-module{
+    	font-size: 1.4rem;
+    }
+    #main-module{
+    	min-height: calc(100vh - 145px);
+    }
+    .header #navbar{
+    	top: 70px;
+    }
+}
